@@ -7,5 +7,8 @@ class Images {
   static const String search = "assets/images/search.svg";
   static const String noNetwork = "assets/images/no_network.svg";
   static const String forgotPasswordArrow = "assets/images/forgot_password_arrow.png";
+  static const String paymentFailed = "assets/images/error.png";
   static const String aadhar = "assets/images/aadhar.jpeg";
+  static const String c1 = "assets/images/image1.jpg";
+  static const String c2 = "assets/images/image2.jpg";
 }

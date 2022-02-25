@@ -1,6 +1,7 @@
 import 'package:bestpay/core/enum/viewstate.dart';
 import 'package:bestpay/model/banklist.dart';
 import 'package:bestpay/model/creditcard.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
@@ -54,6 +55,7 @@ class CardPageViewModel extends VGTSBaseViewModel{
       cardNumber: cardController.text,
       bankName: bankController.value!.bankName,
       cardId: uuid.v4(),
+        createdAt: Timestamp.now(),
       cardType: "Visa"
     );
     try{

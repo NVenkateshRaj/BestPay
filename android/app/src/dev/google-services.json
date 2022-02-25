@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "678403218094",
+    "project_id": "bestpay-dev",
+    "storage_bucket": "bestpay-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678403218094:android:51dd080f2a59727f1c2b3f",
+        "android_client_info": {
+          "package_name": "com.work.bestpay.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678403218094-n1afp6u10pgbhmstrd78rp38fte9olri.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.work.bestpay.dev",
+            "certificate_hash": "99eecb226c6d031e0954f173e2208c644272e655"
+          }
+        },
+        {
+          "client_id": "678403218094-ajks5nij90rdb2r5jigo2m9imikuv83p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBA8Do_9cL4bkvb8yMQQ9kLydulhOtG6VM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678403218094-ajks5nij90rdb2r5jigo2m9imikuv83p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

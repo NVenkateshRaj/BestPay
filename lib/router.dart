@@ -5,15 +5,16 @@ import 'package:bestpay/ui/views/dashboard/dashboard_page.dart';
 import 'package:bestpay/ui/views/forgot_password/forgot_password_page.dart';
 import 'package:bestpay/ui/views/forgot_password/recover/recover_password.dart';
 import 'package:bestpay/ui/views/history/history.dart';
+import 'package:bestpay/ui/views/intro/intro_page.dart';
 import 'package:bestpay/ui/views/kyc/kyc_page.dart';
 import 'package:bestpay/ui/views/login/login_page.dart';
 import 'package:bestpay/ui/views/no_network/no_network_page.dart';
+import 'package:bestpay/ui/views/payment_failed/payment_failed.dart';
 import 'package:bestpay/ui/views/profile/profile.dart';
 import 'package:bestpay/ui/views/register/register_page.dart';
 import 'package:bestpay/ui/views/splash/splash_page.dart';
 import 'package:bestpay/ui/views/utility_payment/create_payment/create_payment.dart';
 import 'package:bestpay/ui/views/utility_payment/payment/paymentpage.dart';
-import 'package:bestpay/ui/views/verify_account/verify_account_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,7 @@ class Routes {
   static const String profile = "profile";
   static const String cardPage = "cardPage";
   static const String recoverPassword = "recoverPassword";
-  static const String otpScreen = "otpScreen";
+  static const String paymentFailed = "paymentFailed";
   static const String createCreditCard = "createCreditCard";
   static const String kycPage = "kycPage";
 }
@@ -117,6 +118,12 @@ class AppRouter {
           settings: RouteSettings(name: settings.name),
         );
 
+        case Routes.paymentFailed:
+        return MaterialPageRoute(
+          builder: (_) => PaymentFailed(),
+          settings: RouteSettings(name: settings.name),
+        );
+
         case Routes.recoverPassword:
           var arg = settings.arguments;
         return MaterialPageRoute(
@@ -124,24 +131,21 @@ class AppRouter {
           settings: RouteSettings(name: settings.name),
         );
 
-        case Routes.otpScreen:
-          var data = settings.arguments as Map<String,dynamic>;
-        return MaterialPageRoute(
-          builder: (_) => VerifyAccountPage(data),
-          settings: RouteSettings(name: settings.name),
-        );
-
         case Routes.createCreditCard:
-          var data = settings.arguments;
         return MaterialPageRoute(
           builder: (_) => AddCard(),
           settings: RouteSettings(name: settings.name),
         );
 
         case Routes.kycPage:
-          var data = settings.arguments;
         return MaterialPageRoute(
           builder: (_) => KYCPage(),
+          settings: RouteSettings(name: settings.name),
+        );
+
+      case Routes.intro:
+        return MaterialPageRoute(
+          builder: (_) => IntroPage(),
           settings: RouteSettings(name: settings.name),
         );
 

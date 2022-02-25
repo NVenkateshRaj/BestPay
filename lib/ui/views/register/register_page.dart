@@ -105,20 +105,11 @@ class _UserInfo extends ViewModelWidget<RegisterViewModel>{
             placeholder: "Enter Your Phone Number",
             onChanged: (value){},
             onSubmitted: (val){
-              viewModel.emailFormFieldController.focusNode.requestFocus();
-            },
-          ),
-          VerticalSpacing.custom(value: 20.0),
-          EditTextField(
-            "Email ",
-            viewModel.emailFormFieldController,
-            placeholder: "Enter Your MailId",
-            onChanged: (value){},
-            onSubmitted: (val){
               viewModel.passwordController.focusNode.requestFocus();
             },
           ),
           VerticalSpacing.custom(value: 20.0),
+
           EditTextField.password(
             "Password ",
             viewModel.passwordController,
@@ -128,7 +119,7 @@ class _UserInfo extends ViewModelWidget<RegisterViewModel>{
               viewModel.conFirmPasswordController.focusNode.requestFocus();
             },
           ),
-          VerticalSpacing.custom(value: 14.0),
+          VerticalSpacing.custom(value: 20.0),
           EditTextField.password(
             "Confirm Password ",
             viewModel.conFirmPasswordController,

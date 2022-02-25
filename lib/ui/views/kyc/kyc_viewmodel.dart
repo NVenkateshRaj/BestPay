@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:bestpay/core/enum/viewstate.dart';
 import 'package:bestpay/model/kyclist.dart';
+import 'package:bestpay/router.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -79,8 +80,8 @@ class KYCViewModel extends VGTSBaseViewModel{
 
   saveBtnClicked()async{
     setState(ViewState.Busy);
-    imageUrl = userSelfie !=null ? await compressImageFile(File(userSelfie!.path)): kycDetails!.aadharImage!;
-    aImage = aadharImage !=null ? await compressImageFile(File(aadharImage!.path)): kycDetails!.aadharImage!;
+    imageUrl = userSelfie !=null ? await compressImageFile(File(userSelfie!.path)): kycDetails != null && kycDetails!.imageUrl!.isNotEmpty ? kycDetails!.imageUrl! : "";
+    aImage = aadharImage !=null ? await compressImageFile(File(aadharImage!.path)): kycDetails != null && kycDetails!.aadharImage!.isNotEmpty ? kycDetails!.aadharImage! : "";
 
     try{
       kycDetails = KYCDetails(
@@ -91,8 +92,6 @@ class KYCViewModel extends VGTSBaseViewModel{
         aadharImage:aImage,
         aadharId:isEdit? kycDetails!.aadharId : uuid.v4().toString(),
       );
-      print( kycDetails!.aadharId);
-      print("isEdit $isEdit");
       isEdit?  await dataBaseService.updateKYC(kycDetails!) :  await dataBaseService.createKYC(kycDetails!);
       navigationService.pop();
     }catch(e){
@@ -108,6 +107,14 @@ class KYCViewModel extends VGTSBaseViewModel{
     TaskSnapshot storageTaskSnapshot  =await reference.putFile(imageFile);
     String dowUrl = await storageTaskSnapshot.ref.getDownloadURL();
     return dowUrl;
+  }
+
+  deleteKyc()async{
+    try {
+      await dataBaseService.deleteKyc(kycDetails!.aadharId!);
+      navigationService.pop();
+      navigationService.popAllAndPushNamed(Routes.dashboard);
+    }catch(e){}
   }
 
 

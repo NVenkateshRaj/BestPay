@@ -28,16 +28,13 @@ class ForgotPasswordViewModel extends VGTSBaseViewModel{
        userDetails = UserDetails(
          name: data['name'],
          phoneNumber: data['phoneNumber'],
-         email: data['email'],
          userId: data['userId'],
          password: data['password']
        );
        var arguments = {
-         'screenFrom': Routes.forgotPassword,
-         'phoneNumber' : phoneNumberController.text,
          'userDetails' : userDetails,
        };
-       navigationService.pushNamed(Routes.otpScreen,arguments: arguments);
+       navigationService.pushNamed(Routes.recoverPassword,arguments: arguments);
      }catch(e){}
      setState(ViewState.Idle);
      notifyListeners();
@@ -54,7 +51,6 @@ class ForgotPasswordViewModel extends VGTSBaseViewModel{
         navigationService.popAllAndPushNamed(Routes.dashboard);
         setState(ViewState.Idle);
         notifyListeners();
-
       }
       else{
         Fluttertoast.showToast(msg: "New Password and Confirm Password Must Be Same");

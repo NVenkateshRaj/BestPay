@@ -52,6 +52,22 @@ android {
         multiDexEnabled true
     }
 
+    flavorDimensions "flavor-type"
+
+    productFlavors {
+        dev {
+            dimension "flavor-type"
+            applicationIdSuffix ".dev"
+            manifestPlaceholders = [appName: "BestPay"]
+        }
+
+        prod {
+            dimension "flavor-type"
+            applicationIdSuffix ""
+            manifestPlaceholders = [appName: "BestPay"]
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

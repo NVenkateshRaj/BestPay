@@ -65,9 +65,9 @@ class CreatePayment extends ViewModelBuilderWidget<CreatePaymentViewModel>{
                 ),
                 VerticalSpacing.custom(value: 15),
                 EditTextField(
-                  "Amount",
+                  "Amount ",
                   viewModel.amountController,
-                  placeholder: "",
+                  placeholder: "Enter Amount",
                   onChanged: (value){},
                   onSubmitted: (val){
                     // viewModel.phoneFormFieldController.focusNode.requestFocus();
@@ -75,9 +75,9 @@ class CreatePayment extends ViewModelBuilderWidget<CreatePaymentViewModel>{
                 ),
                 VerticalSpacing.custom(value: 15),
                 DropdownField(
-                  "Transcation Priority",
+                  "Transcation Priority *",
                   viewModel.transcationController,
-                  placeholder: "Select Bearer",
+                  placeholder: "Select Priority",
                   onChange: (value){
                     viewModel.notifyListeners();
                     viewModel.amountController.text.isNotEmpty ? viewModel.convertAmount(viewModel.amountController.text) : null;
@@ -173,8 +173,7 @@ class _SaveButton extends ViewModelWidget<CreatePaymentViewModel>{
               onPressed:()async{
                 if(viewModel.state != ViewState.Busy){
                   if(viewModel.userInfoFormKey.currentState?.validate() == true){
-                    viewModel.kycDetails!=null ? viewModel.subscribeOnClick() : await showAlertDialog(context,viewModel);
-                    // viewModel.subscribeOnClick();
+                    viewModel.kycDetails!=null ? await viewModel.openCheckout(context) : await showAlertDialog(context,viewModel);
                   }
                 }
               },
@@ -197,11 +196,11 @@ class _SaveButton extends ViewModelWidget<CreatePaymentViewModel>{
       },
     );
 
-    Widget skipkButton = TextButton(
+    Widget skipButton = TextButton(
       child: Text("Skip",style: AppTextStyle.bodyMedium,),
-      onPressed: () {
+      onPressed: () async{
         navigationService.pop();
-        viewModel.subscribeOnClick();
+        await viewModel.openCheckout(context);
       },
     );
 
@@ -210,7 +209,7 @@ class _SaveButton extends ViewModelWidget<CreatePaymentViewModel>{
       title: Text("BestPay",style: AppTextStyle.subheading),
       content: Text("Please Add your KYC",style: AppTextStyle.bodyMedium),
       actions: [
-        skipkButton,
+        skipButton,
         okButton,
       ],
     );
@@ -223,5 +222,4 @@ class _SaveButton extends ViewModelWidget<CreatePaymentViewModel>{
       },
     );
   }
-
 }

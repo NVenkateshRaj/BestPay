@@ -82,16 +82,6 @@ class UserProfile extends ViewModelBuilderWidget<UserProfileViewModel>{
                 },
               ),
               VerticalSpacing.custom(value: 15.0),
-              EditTextField(
-                "Email Id  ",
-                viewModel.emailFormFieldController,
-                placeholder: "Enter Your Email Idr",
-                onChanged: (value){},
-                onSubmitted: (val){
-
-                },
-              ),
-              VerticalSpacing.custom(value: 15.0),
              InkWell(
                onTap: (){
                  var arguments = {
@@ -114,8 +104,9 @@ class UserProfile extends ViewModelBuilderWidget<UserProfileViewModel>{
                 children: [
                   Text("KYC Details",style: AppTextStyle.headerSemiBold.copyWith(fontSize: 22),),
                   InkWell(
-                    onTap: (){
-                      navigationService.pushNamed(Routes.kycPage);
+                    onTap: ()async{
+                      await navigationService.pushNamed(Routes.kycPage);
+                      viewModel.inIt();
                     },
                       child: Text("Edit",style: AppTextStyle.headerSemiBold.copyWith(fontSize: 20),),
                   ),
@@ -157,15 +148,17 @@ class UserProfile extends ViewModelBuilderWidget<UserProfileViewModel>{
         children: [
           !viewModel.mainPageLoading ? Container(
             margin: const EdgeInsets.only(left: 16.0,right: 16.0,bottom: 16.0),
-            child:  Button(
-              "Save Details",
-              key: Key("profileBtn"),
-              isLoading: viewModel.state == ViewState.Busy,
-              onPressed:(){
-                if(viewModel.state != ViewState.Busy){
-                  viewModel.updateUserDetails();
-                }
-              },
+            child:  Center(
+              child: Button(
+                "Save Details",
+                key: Key("profileBtn"),
+                isLoading: viewModel.state == ViewState.Busy,
+                onPressed:(){
+                  if(viewModel.state != ViewState.Busy){
+                    viewModel.updateUserDetails();
+                  }
+                },
+              ),
             ),
           ) : Container(),
         ],

@@ -15,7 +15,8 @@ class SplashViewModel extends VGTSBaseViewModel {
         if (preferenceService.getBearerToken().isNotEmpty) {
           navigationService.popAllAndPushNamed(Routes.dashboard);
         } else {
-          navigationService.popAllAndPushNamed(Routes.logIn);
+          navigationService.popAllAndPushNamed(Routes.intro);
+          //navigationService.popAllAndPushNamed(Routes.logIn);
         }
       });
 

@@ -7,6 +7,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:share/share.dart';
 import 'package:stacked/stacked.dart';
 import '../../../locator.dart';
 import '../../../router.dart';
@@ -58,16 +59,18 @@ class DashboardPage extends ViewModelBuilderWidget<DashboardViewModel> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CarouselSlider(
-                  items: [1,2,3,4,5].map((i) {
+                  items: viewModel.imageList.map((i) {
                     return Builder(
                       builder: (BuildContext context) {
                         return Container(
                             width: MediaQuery.of(context).size.width,
                             margin: EdgeInsets.symmetric(horizontal: 5.0),
                             decoration: BoxDecoration(
-                                color: Colors.amber
+                              borderRadius: BorderRadius.circular(8.0)
                             ),
-                            child: Center(child: Text('text $i', style: TextStyle(fontSize: 16.0),))
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16.0),
+                                child: Image.asset(i,fit: BoxFit.cover,)),
                         );
                       },
                     );
@@ -80,8 +83,8 @@ class DashboardPage extends ViewModelBuilderWidget<DashboardViewModel> {
                     enableInfiniteScroll: true,
                     reverse: false,
                     autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 10),
-                    autoPlayAnimationDuration: Duration(milliseconds: 800),
+                    autoPlayInterval: Duration(seconds: 3),
+                    autoPlayAnimationDuration: Duration(milliseconds: 500),
                     autoPlayCurve: Curves.fastOutSlowIn,
                     enlargeCenterPage: false,
                     scrollDirection: Axis.horizontal,
@@ -104,7 +107,10 @@ class DashboardPage extends ViewModelBuilderWidget<DashboardViewModel> {
                     await navigationService.pushNamed(Routes.history);
                     viewModel.inIt();
                   },text: "History",icon: Icon(Icons.history,color: AppColor.primary,size: 30,),),
-                  _RowWidget(onTap: ()=>print("Share Clicked"),text: "Share",icon: Icon(Icons.share,color: AppColor.primary,size: 30,),),
+                  _RowWidget(onTap: (){
+                    print(viewModel.shareAppLink);
+                    Share.share(viewModel.shareAppLink);
+                  },text: "Share",icon: Icon(Icons.share,color: AppColor.primary,size: 30,),),
                 ],
               ),
               VerticalSpacing.custom(value: 20.0),
@@ -112,7 +118,7 @@ class DashboardPage extends ViewModelBuilderWidget<DashboardViewModel> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("Recent Transcation",style: AppTextStyle.headerSemiBold.copyWith(fontSize: 24),),
+                  Text("Recent Transaction",style: AppTextStyle.headerSemiBold.copyWith(fontSize: 24),),
                   viewModel.paymentList.length != 0 ? InkWell(
                     onTap: (){
                       navigationService.pushNamed(Routes.history);
@@ -128,7 +134,7 @@ class DashboardPage extends ViewModelBuilderWidget<DashboardViewModel> {
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context,index){
                 return TranscationCard(viewModel.paymentList[index]);
-              }): Center(child: Text("No Transcation Found",style: AppTextStyle.subtitleBold1,),)
+              }): Center(child: Text("No Transaction Found",style: AppTextStyle.subtitleBold1,),)
             ],
           ),
         ),

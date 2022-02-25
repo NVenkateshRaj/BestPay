@@ -1,8 +1,11 @@
 import 'package:bestpay/core/enum/viewstate.dart';
+import 'package:bestpay/core/res/styles.dart';
 import 'package:bestpay/model/customer.dart';
 import 'package:bestpay/model/kyclist.dart';
 import 'package:bestpay/model/payment.dart';
 import 'package:bestpay/model/purpose.dart';
+import 'package:bestpay/router.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -57,6 +60,57 @@ KYCDetails? kycDetails;
     notifyListeners();
   }
 
+   openCheckout(BuildContext context) async{
+    var options = {
+      "key": "bysz5K4Cm0cW2vGi64Wo7QPe",
+      "amount": num.parse(amountController.text)*100,
+      "name": "Sample App",
+      "description": "Payment for the some random product",
+      "external": {
+        "wallets": ["paytm"]
+      },
+      "timeout":0.1,
+    };
+    try{
+      _razorpay.open(options);
+     await subscribeOnClick();
+      // showAlertDialog1(context);
+      navigationService.pushNamed(Routes.paymentFailed);
+    }catch(e){
+      print(e.toString());
+    }
+  }
+
+  showAlertDialog1(BuildContext context) {
+
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text("OK",style: AppTextStyle.bodyMedium,),
+      onPressed: () {
+        navigationService.pop();
+      },
+    );
+
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("BestPay",style: AppTextStyle.subheading),
+      content: Text("Payment Failed",style: AppTextStyle.bodyMedium),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+
   subscribeOnClick()async{
     setState(ViewState.Busy);
     final DateTime now = DateTime.now();
@@ -71,14 +125,13 @@ KYCDetails? kycDetails;
       amount: amountController.text,
       total: grandTotal!.toStringAsFixed(2),
       date: formatter.format(now),
+      createdAt: Timestamp.now(),
       time: DateFormat.jm().format(now),
     );
     try{
       await dataBaseService.createPayment(paymentCollection);
       setState(ViewState.Idle);
-      //_razorpay.clear();
       notifyListeners();
-     navigationService.pop();
     }catch(e){
       print(e);
     }

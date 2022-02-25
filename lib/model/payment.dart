@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class PaymentCollection {
   String? customerName;
   String? nickName;
@@ -10,8 +12,10 @@ class PaymentCollection {
   String? paymentId;
   String? date;
   String? time;
-  PaymentCollection({this.customerName, this.nickName, this.accountNumber,
+  Timestamp? createdAt;
+  PaymentCollection({this.customerName, this.nickName, this.accountNumber,this.createdAt,
     this.phoneNumber, this.purpose, this.amount, this.bearer, this.total,this.paymentId,this.date,this.time});
+
   factory PaymentCollection.fromJson(Map<String, dynamic> json) => PaymentCollection(
       customerName : json['customerName'],
       nickName : json['nickName'],
@@ -23,8 +27,10 @@ class PaymentCollection {
       total: json['total'],
       bearer: json['bearer'],
     date: json['date'],
-    time: json['time']
+    time: json['time'],
+      createdAt : json['createdAt']
   );
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['customerName'] = this.customerName;
@@ -38,6 +44,7 @@ class PaymentCollection {
     data['bearer'] = this.bearer;
     data['date'] = this.date;
     data['time'] = this.time;
+    data['createdAt'] =this.createdAt;
     return data;
   }
 }

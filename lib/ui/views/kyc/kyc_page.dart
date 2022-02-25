@@ -39,6 +39,17 @@ class KYCPage extends ViewModelBuilderWidget<KYCViewModel>{
           },
           child: Icon(Icons.arrow_back,color: AppColor.white,),
         ),
+        actions: [
+          InkWell(
+            onTap: (){
+              showAlertDialog1(context,viewModel);
+            },
+            child: Padding(
+              padding:  EdgeInsets.all(10.0),
+              child: Icon(Icons.delete,color: AppColor.background,),
+            ),
+          )
+        ],
     ),
       body: viewModel.mainPageLoading? LoadingScreen() :SingleChildScrollView(
         child: Container(
@@ -104,11 +115,6 @@ class KYCPage extends ViewModelBuilderWidget<KYCViewModel>{
                     width: 100,
                     child:Stack(
                       children: [
-                        // CachedNetworkImage(
-                        //   imageUrl: viewModel.aImage,
-                        //   placeholder: (context, url) => CircularProgressIndicator(),
-                        //   errorWidget: (context, url, error) => Icon(Icons.error),
-                        // ),
                        Image.network(viewModel.aImage),
                         Align(
                           alignment: Alignment.bottomRight,
@@ -177,10 +183,46 @@ class KYCPage extends ViewModelBuilderWidget<KYCViewModel>{
           children: [
             Container(
               margin: const EdgeInsets.only(left: 16.0,right: 16.0,bottom: 16.0),
-              child:   viewModel.mainPageLoading?  Container():_SaveButton(),
+              child:   viewModel.mainPageLoading?  Container():Center(child: _SaveButton()),
             ),
           ],
         )
+    );
+  }
+
+  showAlertDialog1(BuildContext context,KYCViewModel viewModel) {
+
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text("OK",style: AppTextStyle.bodyMedium,),
+      onPressed: () {
+        viewModel.deleteKyc();
+      },
+    );
+    Widget cancelButton = TextButton(
+      child: Text("Cancel",style: AppTextStyle.bodyMedium,),
+      onPressed: () {
+        navigationService.pop();
+      },
+    );
+
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("BestPay",style: AppTextStyle.subheading),
+      content: Text("Do you want delete Kyc Details",style: AppTextStyle.bodyMedium),
+      actions: [
+        cancelButton,
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 

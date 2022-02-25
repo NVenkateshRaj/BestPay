@@ -41,7 +41,6 @@ class LogInViewModel extends VGTSBaseViewModel{
       GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       var arguments = {
         "name":googleUser!.displayName,
-        "email":googleUser.email,
       };
       navigationService.popAllAndPushNamed(Routes.register,arguments:arguments );
     } catch (error) {

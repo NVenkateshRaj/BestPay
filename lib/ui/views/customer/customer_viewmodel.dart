@@ -1,5 +1,6 @@
 import 'package:bestpay/core/enum/viewstate.dart';
 import 'package:bestpay/model/customer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
@@ -16,7 +17,7 @@ class CustomerViewModel extends VGTSBaseViewModel{
   NameFormFieldController nickNameController = NameFormFieldController(ValueKey("txtCompanyname"),required: true,requiredText: "Enter Nick Name");
   PhoneFormFieldController phoneFormFieldController = PhoneFormFieldController(ValueKey("txtPhone"),required: true,requiredText: "Enter  Phone Number");
   PhoneFormFieldController accountNumberFieldController = PhoneFormFieldController(ValueKey("txtAccount"),required: true,requiredText: "Enter Account Number",maxLength: 16,);
-  TextFormFieldController ifscCodeController= TextFormFieldController(ValueKey("txtIFSC"),required: true,requiredText: "Enter IFSC Code");
+  FormFieldController ifscCodeController= FormFieldController(ValueKey("txtIFSC"),required: true,maxLength: 11,validator: (value) => ifscCodeValidator(value,requiredText: "Invalid Ifsc Code",maxLength: 11));
 
   inIt({data}){
     if(data!=null){
@@ -25,6 +26,17 @@ class CustomerViewModel extends VGTSBaseViewModel{
       setData();
     }
     notifyListeners();
+  }
+
+  static String? ifscCodeValidator(String? value, { String? requiredText,int? maxLength }) {
+    if (value?.isEmpty != false)
+      return requiredText ?? "Enter Ifsc Code !";
+
+    if (value?.length != maxLength) {
+      return requiredText ?? "Invalid Ifsc Code !";
+    }
+
+    return null;
   }
 
   saveBtnClick()async{
@@ -36,7 +48,8 @@ class CustomerViewModel extends VGTSBaseViewModel{
           phoneNumber: phoneFormFieldController.text,
           accountNumber: accountNumberFieldController.text,
           ifscCode: ifscCodeController.text,
-          customerId: customer.customerId
+          customerId: customer.customerId,
+        createdAt: Timestamp.now(),
       );
     }
     else{
@@ -46,6 +59,7 @@ class CustomerViewModel extends VGTSBaseViewModel{
           phoneNumber: phoneFormFieldController.text,
           accountNumber: accountNumberFieldController.text,
           ifscCode: ifscCodeController.text,
+          createdAt: Timestamp.now(),
           customerId: uuid.v4().toString()
       );
     }

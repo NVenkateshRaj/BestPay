@@ -18,6 +18,7 @@ class DatabaseService{
   final CollectionReference kycList = FirebaseFirestore.instance.collection('KYC');
   final CollectionReference purposeList = FirebaseFirestore.instance.collection('Purpose');
   final CollectionReference bankList = FirebaseFirestore.instance.collection('Bank');
+  final CollectionReference shareApp = FirebaseFirestore.instance.collection('Share');
 
 
 
@@ -26,7 +27,6 @@ class DatabaseService{
   }
 
   Future updateUserList(UserDetails userDetails) async {
-    print("Update User Details");
     return await userList.doc(userDetails.userId).update(userDetails.toJson());
   }
 
@@ -78,6 +78,12 @@ class DatabaseService{
     return await kycList.doc(preferenceService.getBearerToken()).collection("KYC").doc(kycDetails.aadharId).set(kycDetails.toJson());
   }
 
+  Future<void> deleteKyc(String aadharId) async {
+    return await kycList.doc(preferenceService.getBearerToken()).collection("KYC").doc(aadharId).delete();
+  }
+
+
+
   Future updateKYC(KYCDetails kycDetails) async {
     print(kycDetails.aadharId);
     print("kyc details");
@@ -107,7 +113,6 @@ class DatabaseService{
           }
         });
       });
-      print("data is ${data.toString()}");
       return data;
     } catch (e) {
       print(e.toString());
@@ -125,7 +130,6 @@ class DatabaseService{
               name: element['name'],
               phoneNumber: element['phoneNumber'],
               password: element['password'],
-              email: element['email'],
               userId: element['userId']
             );
           }
@@ -142,7 +146,7 @@ class DatabaseService{
   Future<List<CustomerCollection>> getCustomerList() async {
     List<CustomerCollection> customerCollection= [];
     try {
-      await customerList.doc(preferenceService.getBearerToken()).collection("Customers").get().then((querySnapshot){
+      await customerList.doc(preferenceService.getBearerToken()).collection("Customers").orderBy('createdAt', descending: true).get().then((querySnapshot){
         querySnapshot.docs.forEach((element) {
             customerCollection.add(CustomerCollection.fromJson(Map<String, dynamic>.from(element.data())));
           });
@@ -157,7 +161,7 @@ class DatabaseService{
   Future<List<PaymentCollection>> getPaymentList() async {
     List<PaymentCollection> paymentCollection= [];
     try {
-      await paymentList.doc(preferenceService.getBearerToken()).collection("Payments").get().then((querySnapshot) {
+      await paymentList.doc(preferenceService.getBearerToken()).collection("Payments").orderBy('createdAt', descending: true).get().then((querySnapshot) {
         querySnapshot.docs.forEach((element) {
           paymentCollection.add(PaymentCollection.fromJson(element.data()));
         });
@@ -211,7 +215,7 @@ class DatabaseService{
     try {
       await bankList.get().then((querySnapshot) {
         querySnapshot.docs.forEach((element) {
-          bankCollection.add(BankList.fromJson(Map<String, dynamic>.from(element.data() as Map<String, dynamic>)));
+         bankCollection.add(BankList.fromJson(Map<String, dynamic>.from(element.data() as Map<String, dynamic>)));
         });
       });
       return bankCollection;
@@ -224,7 +228,7 @@ class DatabaseService{
   Future<List<CreditCard>> getCardList() async {
     List<CreditCard> cardCollection= [];
     try {
-      await card.doc(preferenceService.getBearerToken()).collection("Cards").get().then((querySnapshot) {
+      await card.doc(preferenceService.getBearerToken()).collection("Cards").orderBy('createdAt', descending: true).get().then((querySnapshot) {
         querySnapshot.docs.forEach((element) {
           cardCollection.add(CreditCard.fromJson(element.data()));
         });
@@ -234,5 +238,17 @@ class DatabaseService{
       print(e.toString());
       return [];
     }
+  }
+
+  Future getShareLink() async {
+    String share = "";
+    try{
+      await shareApp.get().then((querySnapshot) {
+        querySnapshot.docs.forEach((element) {
+         share = element.get("AppLink");
+        });
+      });
+      return share;
+    }catch(e){}
   }
 }
